@@ -1,0 +1,29 @@
+https://retoolapi.dev/rZyLoM/data
+See all available endpoints here (generated with json-server).
+Endpoint URL
+
+HTTP method endpoints
+
+GET
+/rZyLoM/data
+
+GET filter
+/rZyLoM/data?nombre=value
+
+GET by id
+/rZyLoM/data/1
+
+GET paginate
+/rZyLoM/data?_page=2&_limit=10
+
+POST
+/rZyLoM/data
+
+PUT
+/rZyLoM/data/1
+
+PATCH
+/rZyLoM/data/1
+
+DELETE
+/rZyLoM/data/1

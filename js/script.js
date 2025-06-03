@@ -23,7 +23,7 @@ function mostrarDatos(datos){
                 <td>${persona.edad}</td>
                 <td>
                     <button>Editar</button>
-                    <button>Eliminar</button>
+                    <button onClick="EliminarPersona(${persona.id})">Eliminar</button>
                 </td>
         `
     });
@@ -53,10 +53,10 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
     e.preventDefault(); // e representa a submit - evita que el formilario se envie de golpe
 
     //capturar los valores del formulario
-    const nombre = getElementById("nombre").value.trim();
-    const apellido = getElementById("apellido").value.trim();
-    const email = getElementById("email").value.trim();
-    const edad = getElementById("edad").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
+    const apellido = document.getElementById("apellido").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const edad = document.getElementById("edad").value.trim();
 
     //validacion basica
     if(!nombre || !apellido || !email || !edad){
@@ -87,3 +87,16 @@ document.getElementById("frmAgregar").addEventListener("submit", async e => {
         alert("Ocurrio un error al agregar");
     }
 });
+
+//Funcion para borrar registros
+async function EliminarPersona(id) {
+    const confirmacion = confirm("¿Realmente quieres eliminar este registro?");
+
+    //validamos si el usuario dijo que si
+    if(confirmacion){
+        await fetch(`${API_URL}/${id}`, {method: "DELETE"});
+
+        //recargamos la tabla para obtener informacion
+        obtenerPersonas();
+    }
+}

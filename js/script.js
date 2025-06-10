@@ -22,7 +22,7 @@ function mostrarDatos(datos){
                 <td>${persona.email}</td>
                 <td>${persona.edad}</td>
                 <td>
-                    <button>Editar</button>
+                    <button onclick="AbrirModalEditar(${persona.id}, '${persona.nombre}', '${persona.apellido}', '${persona.email}', '${persona.edad}')">Editar</button>
                     <button onClick="EliminarPersona(${persona.id})">Eliminar</button>
                 </td>
         `
@@ -100,3 +100,55 @@ async function EliminarPersona(id) {
         obtenerPersonas();
     }
 }
+
+
+//Proceso para editar un registro
+const modalEditar = document.getElementById("modal-editar");
+const btnCerrarEditar = document.getElementById("btnCerrarEditar");
+
+btnCerrarEditar.addEventListener("click", () => {
+    modalEditar.close();//Cerrar modal de editar
+});
+
+function AbrirModalEditar(id, nombre, apellido, email, edad){
+    //se agregan los valores al registro del imput
+    document.getElementById("idEditar").value = id;
+    document.getElementById("nombreEditar").value = nombre;
+    document.getElementById("apellidoEditar").value = apellido;
+    document.getElementById("emailEditar").value = email;
+    document.getElementById("edadEditar").value = edad;
+
+    //modal se abre despues de agregar los valores a los inputs
+    modalEditar.showModal();
+}
+
+document.getElementById("frmEditar").addEventListener("submit", async e=>{
+    e.preventDefault(); //evita que el formulario se envie
+
+    const id = document.getElementById("idEditar").value;
+    const nombre = document.getElementById("nombreEditar").value.trim();
+    const apellido = document.getElementById("apellidoEditar").value.trim();
+    const email = document.getElementById("emailEditar").value.trim();
+    const edad = document.getElementById("edadEditar").value.trim();
+
+    if(!id || !nombre || !apellido || !email || !edad){
+        alert("complete los cambios pongamonos serios");
+        return; //evita que el codigo se siga ejecutando
+    }
+
+    //llamada a la API
+    const respuesta = await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({edad, email, nombre, apellido})
+    });
+
+    if(respuesta.ok){
+        alert("Registro actualizado con exito"); //confirmacion
+        modalEditar.close(); //cerramos el modal
+        obtenerPersonas(); //actualizamos la lista
+    }
+    else{
+        alert("Ocurrio un erro al actualizar");
+    }
+});
